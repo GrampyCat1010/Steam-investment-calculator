@@ -76,4 +76,4 @@ def echo_all(message):
 #Запуск бота
 if __name__ == "__main__":
     print("Бот запущен")
-    bot.infinity_polling() #запускает бесконечный цикл опроса серверов Telegram\
+    bot.infinity_polling() #запускает бесконечный цикл опроса серверов Telegram
