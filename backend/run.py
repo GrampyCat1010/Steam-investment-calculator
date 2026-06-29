@@ -9,6 +9,8 @@ from urllib3.util.retry import Retry
 
 TOKEN = "7832070396:AAGkHgAZ0NT84_QjAFDN3CTQI50AHeZ04jY"
 
+app_id = 730
+
 # Настройка сессии с повторными попытками при таймаутах
 session = requests.Session()
 retry = Retry(
@@ -570,6 +572,40 @@ def handle_text(message):
             )
     except Exception as e:
         print(f"Ошибка в handle_text: {e}")
+
+def get_inventory_items(steam_id, context_id=2):
+    """
+    Retrieves a list of items from a Steam inventory using SteamID64.
+    """
+    url = f'http://steamcommunity.com/inventory/{steam_id}/{app_id}/{context_id}'
+    try:
+        response = requests.get(url).json()
+        if 'descriptions' in response:
+            return response['assets'], response['descriptions']
+        else:
+            print(f"Error retrieving items: {response.get('message', 'Unknown error')}")
+            return None
+    except requests.RequestException as e:
+        print(f"HTTP request error: {e}")
+        return None
+
+def main(message):
+    steam_id = input("Enter the Steam profile SteamID64: ")
+    assets, descriptions = get_inventory_items(steam_id)
+
+    if assets:
+        bot.send_message(message.chat.id,"Inventory Items:")
+        bot.send_message(message.chat.id,'---')
+        for asset in assets:
+            classid = asset['classid']
+            for description in descriptions:
+                if description['classid'] == classid:
+                    bot.send_message(message.chat.id,f"Name: {description['name']}")
+                    bot.send_message(message.chat.id,f"Type: {description['type']}")
+                    bot.send_message(message.chat.id,f"Marketable: {'Yes' if description['marketable'] else 'No'}")
+                    bot.send_message(message.chat.id,'---')
+    else:
+        bot.send_message(message.chat.id,"Failed to retrieve inventory items.")
 
 
 # Запуск бота с обработкой ошибок
