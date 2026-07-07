@@ -19,7 +19,7 @@ function App() {
     return (
         <div>
             <h1>Тут будет наше приложение</h1>
-            <p>Steam ID: {steamId}</p>
+            <p style={{ fontWeight: 'bold' }}>Steam ID: {steamId}</p>
         </div>
     );
 }
