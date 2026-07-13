@@ -24,6 +24,11 @@
   color: white;
 }
 
+.main-content {
+  margin-top: 70px;
+  padding: 30px;
+}
+
 .App-link {
   color: #61dafb;
 }

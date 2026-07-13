@@ -1,14 +1,18 @@
+// App.js
 import { useState } from "react";
 import WelcomePage from "./pages/WelcomePage";
+import Header from "./components/Header";
 
 function App() {
     const [steamId, setSteamId] = useState("");
-    const [isStarted, setIsStarted] = useState(false); // исправил опечатку isStartd -> isStarted
+    const [isStarted, setIsStarted] = useState(false);
 
     const handleSaveSteamId = (value) => {
+        console.log("Получено значение:", value);
         setSteamId(value);
         setIsStarted(true);
     };
+
 
     // Если isStarted = false, показываем приветствие с полем ввода
     if (!isStarted) {
@@ -17,10 +21,13 @@ function App() {
 
     // Если isStarted = true, показываем основное приложение
     return (
-        <div>
-            <h1>Тут будет наше приложение</h1>
-            <p style={{ fontWeight: 'bold' }}>Steam ID: {steamId}</p>
+        <div className="container">
+            <Header steamId={steamId} />
+
+            <main className="main-content">
+            </main>
         </div>
+
     );
 }
 
