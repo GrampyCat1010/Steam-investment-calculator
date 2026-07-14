@@ -1,100 +1,179 @@
+/* ===== ШАПКА САЙТА ===== */
 .header {
-    position: fixed;
+    position: fixed; /* шапка "прилипает" к верху экрана и остаётся видна при прокрутке */
     top: 0;
     left: 0;
     width: 100%;
-    height: 70px;
+    height: 84px; /* важно: .dashboard в DashboardPage.css имеет padding-top с учётом этой высоты */
 
-    background: #171a21;
-    border-bottom: 2px solid #2a475e;
+    background: #0b0e14;         /* тёмный фон, чуть темнее основного фона страницы (#141921) */
+    border-bottom: 1px solid #1c2130; /* тонкая граница-разделитель вместо толстой рамки, как было раньше */
 
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* три блока (лого / меню / действия) разъезжаются по краям */
     align-items: center;
 
-    padding: 0 40px;
-    box-sizing: border-box;
-    z-index: 1000;
+    padding: 0 60px;
+    box-sizing: border-box; /* padding не увеличивает итоговую ширину/высоту блока */
+    z-index: 1000; /* шапка всегда поверх остального контента страницы */
 }
 
-.logo-link {
-    color: #66c0f4;
-    text-decoration: none;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.header-nav {
-    display: flex;
-    gap: 35px;
-}
-
-.header-nav a {
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    transition: 0.2s;
-}
-
-.header-nav a:hover {
-    color: #66c0f4;
-}
-
-.header-steamid {
-    color: white;
-    font-weight: bold;
-    white-space: nowrap;
-    margin-left: 20px;
-}
+/* ---------- ЛОГОТИП ---------- */
 
 .header-logo {
     display: flex;
     align-items: center;
+    gap: 12px;
+    text-decoration: none; /* убираем подчёркивание, т.к. это <Link>, а не обычный текст */
 }
 
-.logo-link {
+/* Круглая "плашка" под иконкой — даёт эффект значка/бейджа, а не просто плоской картинки */
+.logo-badge {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%; /* делает элемент кругом */
     display: flex;
     align-items: center;
-    gap: 12px;
-    text-decoration: none;
+    justify-content: center;
+    background: linear-gradient(135deg, #3b6dff, #7c4dff); /* тот же градиент, что у кнопки Open Calculator */
+    flex-shrink: 0; /* круг не сжимается, если названию не хватает места */
+    overflow: hidden; /* обрезает картинку логотипа по кругу, если она квадратная */
 }
 
 .logo-image {
-    height: 64px;
-    width: 64px;
-    object-fit: contain;
-}
-
-.logo-steamid {
-    font-size: 15px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    user-select: none;
-}
-
-.logo-steamid:hover {
-    color: #61dafb;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* картинка вписывается в круг, сохраняя пропорции, без искажений */
 }
 
 .logo-text {
     display: flex;
     flex-direction: column;
-    line-height: 1.2;
+    line-height: 1.25;
 }
 
 .logo-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #61dafb;
+    font-size: 19px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+/* Вторая строка лого ("Calculator") — окрашена градиентом вместо обычного цвета */
+.logo-title-accent {
+    background: linear-gradient(90deg, #4d7cff, #8a5cf6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent; /* текст становится "прозрачным", видно только градиентную заливку под ним */
+}
+
+/* ---------- НАВИГАЦИЯ (меню по центру) ---------- */
+
+.header-nav {
+    display: flex;
+    align-items: center;
+    gap: 36px;
 }
 
 .nav-link {
-    font-weight: bold;
+    position: relative; /* нужно, чтобы позиционировать подчёркивание (::after) относительно ссылки */
+    color: #9aa3b2;      /* серый по умолчанию — неактивный пункт меню */
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    padding-bottom: 22px; /* место снизу для подчёркивающей полоски активного пункта */
+    transition: color 0.15s ease;
 }
 
-.header-logo {
+.nav-link:hover {
+    color: #ffffff; /* при наведении на любой пункт текст становится белым */
+}
+
+/* Класс "active" добавляется в Header.js только текущей странице (через сравнение location.pathname) */
+.nav-link.active {
+    color: #4d7cff; /* активный пункт подсвечен акцентным синим */
+    font-weight: 600;
+}
+
+/* Подчёркивающая полоска под активным пунктом меню */
+.nav-link.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: #4d7cff;
+    border-radius: 2px;
+}
+
+/* ---------- ПРАВЫЙ БЛОК (Steam ID + кнопка темы) ---------- */
+
+.header-actions {
     display: flex;
     align-items: center;
-    gap: 8px; /* добавлен отступ между лого и текстом */
+    gap: 20px;
+}
+
+.header-steamid {
+    color: #d5d9e3;
+    font-weight: 600;
+    font-size: 14px;
+    white-space: nowrap; /* Steam ID не переносится на новую строку */
+    cursor: pointer;      /* курсор-указатель намекает, что по тексту можно кликнуть (копирование) */
+    user-select: none;    /* запрещаем выделение текста при клике, чтобы клик воспринимался как "кнопка" */
+    transition: color 0.15s ease;
+}
+
+.header-steamid:hover {
+    color: #4d7cff;
+}
+
+/* Квадратная кнопка-иконка переключения темы */
+.theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid #232838;
+    background: #10141c;
+    color: #ffffff; /* задаёт currentColor для SVG-иконки внутри кнопки */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.theme-toggle:hover {
+    background: #171c28;
+    border-color: #2f3648;
+}
+
+.theme-toggle svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* ---------- АДАПТИВНОСТЬ ---------- */
+
+/* На средних экранах (планшеты) уменьшаем боковые отступы и промежутки между пунктами меню */
+@media (max-width: 900px) {
+    .header {
+        padding: 0 24px;
+    }
+
+    .header-nav {
+        gap: 20px;
+    }
+
+    .logo-title {
+        font-size: 16px;
+    }
+}
+
+/* На узких экранах (телефоны) полностью скрываем меню —
+   бургер-меню для мобилки не реализовано, это можно добавить отдельной задачей */
+@media (max-width: 700px) {
+    .header-nav {
+        display: none;
+    }
 }

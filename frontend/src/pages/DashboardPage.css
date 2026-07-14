@@ -1,0 +1,285 @@
+/* ===== ОБЩИЙ КОНТЕЙНЕР СТРАНИЦЫ ===== */
+.dashboard {
+    /* Верхний отступ 124px учитывает высоту фиксированной шапки (84px) + запас,
+       чтобы контент не заезжал под Header, который висит поверх (position: fixed) */
+    padding: 124px 60px 80px;
+    max-width: 1440px; /* ограничиваем ширину на больших мониторах, чтобы текст не растягивался на весь экран */
+    margin: 0 auto;     /* центрируем контейнер по горизонтали */
+    color: #ffffff;
+}
+
+/* ---------- HERO: верхний блок (заголовок слева + карточка Portfolio Overview справа) ---------- */
+
+.dashboard-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* две равные колонки: текст и карточка */
+    gap: 60px;
+    align-items: start; /* колонки выравниваются по верхнему краю, а не растягиваются по высоте друг друга */
+}
+
+.dashboard-page-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* контент прижат к левому краю, а не растянут на всю ширину колонки */
+}
+
+/* Маленький бейдж "Calculate. Invest. Profit." над заголовком */
+.badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 20px; /* полностью скруглённые края — форма "пилюли" */
+    background: rgba(90, 120, 255, 0.12); /* полупрозрачный синий фон */
+    border: 1px solid rgba(90, 120, 255, 0.35);
+    color: #7c9bff;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 28px;
+}
+
+.badge-icon {
+    font-size: 14px;
+}
+
+/* Главный заголовок "Smart Steam Investments. Maximize Profits." */
+.dashboard-page-info h1 {
+    font-size: 52px;
+    line-height: 1.15;
+    font-weight: 800;
+    margin: 0 0 20px;
+}
+
+/* Красит текст градиентом — используется для "Maximize Profits." и для "Calculator" в лого Header'а.
+   background-clip: text "вырезает" градиент по форме букв, а color: transparent скрывает обычный цвет текста */
+.gradient-text {
+    background: linear-gradient(90deg, #4d7cff, #8a5cf6);
+    -webkit-background-clip: text; /* префикс для Safari/старых браузеров на WebKit */
+    background-clip: text;
+    color: transparent;
+}
+
+.dashboard-page-info p {
+    font-size: 17px;
+    line-height: 1.6;
+    color: #9aa3b2; /* приглушённый серый — вторичный текст, не отвлекает от заголовка */
+    max-width: 480px; /* ограничиваем ширину параграфа, чтобы строки не были слишком длинными и легко читались */
+    margin: 0 0 32px;
+}
+
+/* Кнопка "Open Calculator" */
+.open-calculator {
+    display: inline-flex; /* flex, но по ширине контента, а не на всю строку */
+    align-items: center;
+    gap: 10px;
+    padding: 16px 28px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #3b6dff, #7c4dff); /* тот же градиент, что в акцентном тексте */
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none; /* убираем стандартное подчёркивание ссылки */
+    transition: transform 0.15s ease, box-shadow 0.15s ease; /* плавная анимация при наведении */
+    box-shadow: 0 8px 24px rgba(80, 90, 255, 0.35); /* мягкая тень под кнопкой для объёма */
+}
+
+.open-calculator:hover {
+    transform: translateY(-2px); /* кнопка слегка "приподнимается" при наведении */
+    box-shadow: 0 12px 28px rgba(80, 90, 255, 0.45); /* тень становится больше — усиливает эффект приподнятости */
+}
+
+.open-calculator-icon {
+    font-size: 18px;
+}
+
+.open-calculator-arrow {
+    font-size: 18px;
+    transition: transform 0.15s ease;
+}
+
+/* Стрелка "→" сдвигается вправо при наведении на кнопку — эффект "движения вперёд" */
+.open-calculator:hover .open-calculator-arrow {
+    transform: translateX(4px);
+}
+
+/* ---------- PORTFOLIO OVERVIEW CARD: карточка справа со статами и графиком ---------- */
+
+.portfolio-overview {
+    background: #10141c;      /* фон чуть светлее основного (#141921 из index.css), чтобы карточка выделялась */
+    border: 1px solid #232838;
+    border-radius: 20px;
+    padding: 28px;
+}
+
+.portfolio-overview-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.portfolio-overview-icon {
+    color: #4d7cff; /* основной акцентный синий цвет всего дизайна */
+    font-size: 20px;
+}
+
+.portfolio-overview-header h2 {
+    font-size: 20px;
+    margin: 0;
+}
+
+/* Сетка из 4 карточек статистики (Total Value, Trade Count и т.д.) */
+.portfolio-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 одинаковые по ширине колонки */
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.portfolio-stat-card {
+    background: #151a24; /* ещё чуть светлее, чем фон родительской карточки — создаёт "вложенность" */
+    border: 1px solid #232838;
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.portfolio-stat-label {
+    font-size: 13px;
+    color: #8a93a6; /* приглушённый цвет для подписи ("Total Value") */
+}
+
+.portfolio-stat-value {
+    font-size: 22px;
+    font-weight: 700; /* сама цифра — самый заметный элемент карточки */
+}
+
+.portfolio-stat-change {
+    font-size: 13px;
+    color: #3ddc84; /* зелёный — обозначает положительное изменение (+12.45%) */
+    font-weight: 600;
+}
+
+/* Карточка с графиком под статами */
+.portfolio-chart-card {
+    background: #151a24;
+    border: 1px solid #232838;
+    border-radius: 14px;
+    padding: 20px;
+}
+
+.portfolio-chart-card h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0 0 14px;
+    color: #e5e8ef;
+}
+
+/* Сам SVG-график (компонент PortfolioChart из DashboardPage.js) */
+.portfolio-chart {
+    width: 100%;   /* растягивается на всю ширину карточки */
+    height: 220px; /* фиксированная высота, соответствует height в viewBox графика */
+    display: block; /* убирает лишний отступ снизу, который браузер добавляет inline-элементам типа svg/img */
+}
+
+/* Фоновые горизонтальные линии сетки внутри графика */
+.chart-grid-line {
+    stroke: #232838;
+    stroke-width: 1;
+}
+
+/* Сама линия графика портфеля */
+.chart-line {
+    stroke: #4d7cff;
+    stroke-width: 2.5;
+    stroke-linecap: round;  /* скругляет концы линии */
+    stroke-linejoin: round; /* скругляет "изломы" в местах соединения точек */
+}
+
+/* Подписи дат под графиком (May 1, May 8 ...) */
+.portfolio-chart-labels {
+    display: flex;
+    justify-content: space-between; /* равномерно распределяет подписи по ширине */
+    margin-top: 8px;
+    font-size: 12px;
+    color: #8a93a6;
+}
+
+/* ---------- FEATURES: нижний ряд из 4 карточек с иконками ---------- */
+
+.dashboard-features {
+    margin-top: 70px; /* большой отступ от hero-секции, чтобы блок визуально отделялся */
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 карточки в ряд на десктопе */
+    gap: 32px;
+}
+
+.feature-card {
+    display: flex;
+    align-items: flex-start; /* иконка и текст выровнены по верхнему краю, а не по центру */
+    gap: 14px;
+}
+
+.feature-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0; /* иконка не сжимается, если тексту не хватает места */
+    color: #4d7cff; /* stroke="currentColor" в SVG в DashboardPage.js берёт этот цвет */
+}
+
+.feature-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.feature-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.feature-text b {
+    font-size: 16px;
+    font-weight: 700; /* заголовок фичи, например "Market Data" */
+}
+
+.feature-text span {
+    font-size: 14px;
+    color: #9aa3b2; /* описание фичи, например "Real-time prices and trends" */
+}
+
+/* ---------- RESPONSIVE: адаптация под маленькие экраны ---------- */
+
+/* На планшетах (уже 1100px) hero-секция схлопывается в одну колонку,
+   а карточки фич — в 2 колонки вместо 4 */
+@media (max-width: 1100px) {
+    .dashboard-hero {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-features {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* На телефонах (до 640px) уменьшаем отступы, статы и фичи становятся в 1-2 колонки,
+   заголовок уменьшается, чтобы помещаться на маленьком экране */
+@media (max-width: 640px) {
+    .dashboard {
+        padding: 100px 20px 60px;
+    }
+
+    .portfolio-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashboard-features {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-page-info h1 {
+        font-size: 38px;
+    }
+}
