@@ -1,0 +1,316 @@
+/* ===== ОБЩИЙ КОНТЕЙНЕР СТРАНИЦЫ ===== */
+.about {
+    /* Тот же верхний отступ, что на .dashboard — учитывает высоту фиксированной шапки (84px) */
+    padding: 124px 60px 100px;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: #ffffff;
+}
+
+/* ---------- HERO: бейдж + заголовок + описание, по центру ---------- */
+
+.about-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;      /* на этой странице контент центрируем, в отличие от Dashboard (там слева) */
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 60px;
+}
+
+/* Бейдж — те же стили, что .badge на DashboardPage.css, здесь продублированы,
+   т.к. AboutUsPage.css подключается отдельно и не видит классы DashboardPage.css */
+.badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: rgba(90, 120, 255, 0.12);
+    border: 1px solid rgba(90, 120, 255, 0.35);
+    color: #7c9bff;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 28px;
+}
+
+.badge-icon {
+    font-size: 14px;
+}
+
+.about-hero h1 {
+    font-size: 48px;
+    line-height: 1.15;
+    font-weight: 800;
+    margin: 0 0 20px;
+}
+
+/* Красит "for traders." градиентом — идентично .gradient-text на DashboardPage.css */
+.gradient-text {
+    background: linear-gradient(90deg, #4d7cff, #8a5cf6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.about-hero p {
+    font-size: 17px;
+    line-height: 1.6;
+    color: #9aa3b2;
+    margin: 0;
+}
+
+/* ---------- ЦЕННОСТИ: заголовок секции + 3 карточки с иконками ---------- */
+
+.about-values {
+    margin-bottom: 80px;
+}
+
+.about-values h2,
+.about-team h2 {
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    margin: 0 0 36px;
+}
+
+.about-values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.value-card {
+    background: #10141c;   /* тот же фон, что у .portfolio-overview на Dashboard */
+    border: 1px solid #232838;
+    border-radius: 18px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* transition описывает, какие свойства должны плавно анимироваться при смене состояния (например :hover ниже) */
+    transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.value-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(77, 124, 255, 0.12); /* полупрозрачная подложка под иконку, перекликается с .badge */
+    color: #4d7cff;
+    margin-bottom: 16px;
+}
+
+.value-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.value-card b {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.value-card p {
+    font-size: 14px;
+    line-height: 1.55;
+    color: #9aa3b2;
+    margin: 0;
+}
+
+/* ===== HOVER-ЭФФЕКТ ДЛЯ КАРТОЧЕК ЦЕННОСТЕЙ =====
+   Важно: эти карточки НЕ кликабельны (это просто div, не ссылка и не кнопка),
+   поэтому здесь НЕТ cursor: pointer — курсор остаётся обычной стрелкой,
+   чтобы у пользователя не создавалось ложного ощущения, будто по карточке можно кликнуть.
+   Эффект нужен только для "оживления" интерфейса при наведении, как лёгкая обратная связь. */
+.value-card:hover {
+    border-color: #3b4256;        /* рамка карточки чуть светлеет */
+    background: #171c28;          /* фон слегка светлее исходного #10141c — эффект лёгкой подсветки */
+    transform: translateY(-3px);  /* карточка слегка "приподнимается" вверх */
+}
+
+/* Иконка внутри карточки тоже реагирует на наведение — усиливает ощущение отклика интерфейса */
+.value-card:hover .value-icon {
+    background: rgba(77, 124, 255, 0.22); /* подложка под иконкой становится ярче */
+}
+
+/* ---------- КОМАНДА: заголовок + 3 карточки участников ---------- */
+
+.about-team {
+    margin-bottom: 90px;
+}
+
+.about-team-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* теперь 2 карточки — по числу людей в команде */
+    gap: 24px;
+    max-width: 560px;   /* ограничиваем ширину, чтобы 2 карточки не растягивались на всю ширину страницы */
+    margin: 0 auto;     /* центрируем блок из 2 карточек */
+}
+
+/* ===== КАРТОЧКА УЧАСТНИКА КОМАНДЫ =====
+   В JSX это теперь <a href={githubUrl}>, а не <div> — то есть кликабельна ВСЯ карточка целиком,
+   а не только текст ника. Поэтому здесь дополнительно сбрасываются стандартные стили ссылки браузера
+   (подчёркивание, синий цвет) и явно указывается cursor: pointer, чтобы пользователь понимал,
+   что по всему блоку можно кликнуть. */
+.team-card {
+    background: #151a24;
+    border: 1px solid #232838;
+    border-radius: 18px;
+    padding: 32px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;      /* аватар и ник выровнены по центру карточки по горизонтали */
+    text-align: center;
+
+    /* Сброс стандартных стилей ссылки — без этого браузер сделал бы карточку похожей на текстовую ссылку */
+    text-decoration: none;
+    color: inherit;           /* текст внутри карточки наследует обычный белый/серый цвет, а не "ссылочный синий" */
+    cursor: pointer;          /* курсор-рука сигнализирует, что по карточке можно кликнуть (в отличие от .value-card) */
+
+    /* transition — свойства, которые плавно анимируются при наведении (см. .team-card:hover ниже) */
+    transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ===== ОБЩЕЕ ВЫДЕЛЕНИЕ ВСЕЙ КАРТОЧКИ ПРИ НАВЕДЕНИИ =====
+   Раньше подсветка была только у текста ника (.team-nickname:hover).
+   Теперь при наведении на любую точку карточки — фото, отступы, ник — подсвечивается весь блок:
+   рамка становится акцентно-синей, фон чуть светлеет, карточка приподнимается и получает мягкую тень. */
+.team-card:hover {
+    border-color: #4d7cff;
+    background: #181e2c;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(77, 124, 255, 0.18);
+}
+
+/* ===== АВАТАРКА УЧАСТНИКА (реальное фото вместо кружка с буквой) ===== */
+.team-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%; /* превращает квадратную картинку в круг */
+
+    /* object-fit: cover — картинка заполняет весь круг целиком,
+       сохраняя пропорции, но при этом обрезаясь по краям (как object-fit в фотогалереях).
+       Без этого свойства неквадратное фото сплющилось бы под форму круга. */
+    object-fit: cover;
+
+    /* Технический приём "градиентная рамка вокруг круглого фото".
+       У border-radius нет прямой поддержки градиентных рамок для <img>, поэтому используется трюк:
+       - border: 2px solid transparent — резервируем место под рамку, но делаем её прозрачной
+       - background с ДВУМЯ градиентами и разными "box":
+           1) linear-gradient(#151a24, #151a24) padding-box — заливка ВНУТРИ рамки (совпадает с фоном карточки,
+              но фактически перекрывается самим <img>, это нужно только чтобы padding-box не был пустым)
+           2) linear-gradient(135deg, #3b6dff, #7c4dff) border-box — сам градиент рисуется ИМЕННО в области рамки (border-box)
+       Итог: получаем тонкую сине-фиолетовую обводку вокруг круглого фото, как акцентная деталь дизайна. */
+    border: 2px solid transparent;
+    background:
+            linear-gradient(#151a24, #151a24) padding-box,
+            linear-gradient(135deg, #3b6dff, #7c4dff) border-box;
+
+    margin-bottom: 16px;
+    /* transition готовит плавную анимацию для transform и box-shadow, которые меняются в hover-правиле ниже */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Селектор ".team-card:hover .team-avatar" означает:
+   "когда наводят курсор на ВСЮ карточку team-card — измени стиль вложенной .team-avatar".
+   Это дополнительный эффект ПОВЕРХ общего выделения карточки — фото ещё и увеличивается со свечением. */
+.team-card:hover .team-avatar {
+    transform: scale(1.05);                          /* фото слегка увеличивается */
+    box-shadow: 0 0 0 4px rgba(77, 124, 255, 0.25);   /* вокруг появляется мягкое синее "свечение"-ореол */
+}
+
+/* ===== НИК УЧАСТНИКА =====
+   Это уже просто <span>, а не отдельная ссылка — своего hover-состояния у него больше нет,
+   вся интерактивность (подсветка, курсор, переход по клику) обеспечивается родительским .team-card. */
+.team-nickname {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+/* ---------- CTA: финальный блок с кнопкой перехода к калькулятору ---------- */
+
+.about-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    text-align: center;
+    padding: 56px 40px;
+    background: #10141c;
+    border: 1px solid #232838;
+    border-radius: 24px;
+}
+
+.about-cta h2 {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0;
+    max-width: 480px;
+}
+
+/* Кнопка — идентична .open-calculator на DashboardPage.css, продублирована по той же причине (разные CSS-файлы) */
+.open-calculator {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 28px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #3b6dff, #7c4dff);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 8px 24px rgba(80, 90, 255, 0.35);
+}
+
+.open-calculator:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(80, 90, 255, 0.45);
+}
+
+.open-calculator-icon {
+    font-size: 18px;
+}
+
+.open-calculator-arrow {
+    font-size: 18px;
+    transition: transform 0.15s ease;
+}
+
+.open-calculator:hover .open-calculator-arrow {
+    transform: translateX(4px);
+}
+
+/* ---------- АДАПТИВНОСТЬ ---------- */
+
+@media (max-width: 900px) {
+    .about-values-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .about {
+        padding: 100px 20px 60px;
+    }
+
+    .about-hero h1 {
+        font-size: 34px;
+    }
+
+    .about-team-grid {
+        grid-template-columns: 1fr; /* на телефоне 2 карточки команды тоже лучше в столбик */
+        max-width: 320px;
+    }
+
+    .about-cta {
+        padding: 40px 24px;
+    }
+}

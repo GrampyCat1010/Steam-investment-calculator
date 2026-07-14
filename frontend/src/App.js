@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom"; // Routes/Route нужны, ч
 import WelcomePage from "./pages/WelcomePage";
 import Header from "./components/Header";
 import DashboardPage from "./pages/DashboardPage"; // страница, которую мы показываем на "/"
+import AboutUsPage from "./pages/AboutUsPage";
 
 function App() {
     // steamId — значение, которое пользователь ввёл на приветственном экране
@@ -38,11 +39,11 @@ function App() {
                 <Routes>
                     {/* path="/" — главная страница (дашборд с графиком и статами) */}
                     <Route path="/" element={<DashboardPage />} />
+                    <Route path="/about-us" element={<AboutUsPage />} />
                     {/* TODO: сюда позже добавить остальные страницы, на которые уже есть ссылки в Header:
                         <Route path="/calculator" element={<CalculatorPage />} />
                         <Route path="/inventory" element={<InventoryPage />} />
                         <Route path="/market" element={<MarketPage />} />
-                        <Route path="/about-us" element={<AboutUsPage />} />
                         Пока этих компонентов не существует, переход по этим ссылкам ничего не покажет. */}
                 </Routes>
             </main>
