@@ -1,0 +1,201 @@
+/* ===== ОСНОВНОЙ КОНТЕЙНЕР СТРАНИЦЫ ===== */
+
+.market-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 124px 60px 100px;
+    color: #ffffff;
+}
+
+/* ---------- ВЕРХНЯЯ СЕКЦИЯ ---------- */
+
+.market-hero {
+    max-width: 650px;
+    margin-bottom: 46px;
+}
+
+.market-eyebrow {
+    display: inline-flex;
+    padding: 8px 16px;
+    border: 1px solid rgba(90, 120, 255, 0.35);
+    border-radius: 20px;
+    background: rgba(90, 120, 255, 0.12);
+    color: #7c9bff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.market-hero h1 {
+    margin: 18px 0 14px;
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+/* Акцентное слово использует тот же сине-фиолетовый градиент, что и на других страницах. */
+.market-hero h1 span {
+    background: linear-gradient(90deg, #4d7cff, #8a5cf6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.market-hero p,
+.market-note {
+    margin: 0;
+    color: #9aa3b2;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* ---------- СЕТКА КАРТОЧЕК МАРКЕТОВ ---------- */
+
+.markets-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+/* Карточка целиком является ссылкой, поэтому курсор и hover применяются ко всей области. */
+.market-card {
+    min-height: 104px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 22px;
+    border: 1px solid #232838;
+    border-radius: 18px;
+    background: #10141c;
+    color: inherit;
+    text-decoration: none;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.market-card:hover {
+    transform: translateY(-4px);
+    border-color: #4d7cff;
+    background: #181e2c;
+    box-shadow: 0 12px 28px rgba(77, 124, 255, 0.18);
+}
+
+/* Видимая обводка нужна пользователям, которые переходят по элементам с клавиатуры. */
+.market-card:focus-visible {
+    outline: 3px solid #75a7ff;
+    outline-offset: 3px;
+}
+
+/* ---------- ЛОГОТИП И ТЕКСТ КАРТОЧКИ ---------- */
+
+.market-logo {
+    width: 58px;
+    height: 58px;
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    overflow: hidden;
+    padding: 10px;
+    border: 1px solid #2a3244;
+    border-radius: 14px;
+    background: #171d29;
+}
+
+/* Изображения приходят из интернета, поэтому contain сохраняет их пропорции. */
+.market-logo img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    object-fit: contain;
+}
+
+.market-card-content {
+    min-width: 0;
+    display: grid;
+    gap: 6px;
+}
+
+.market-title-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.market-title-row strong {
+    font-size: 17px;
+    line-height: 1.2;
+}
+
+.market-description {
+    color: #9aa3b2;
+    font-size: 14px;
+    line-height: 1.35;
+}
+
+/* Синяя галочка помечает именно официальный Steam Community Market. */
+.steam-official {
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    flex: 0 0 auto;
+    color: #1a9fff;
+}
+
+.steam-official svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Стрелка сообщает, что по карточке будет выполнен переход на внешний сайт. */
+.market-open {
+    margin-left: auto;
+    color: #93a4c5;
+    font-size: 22px;
+    transition: transform 0.18s ease, color 0.18s ease;
+}
+
+.market-card:hover .market-open {
+    transform: translate(2px, -2px);
+    color: #ffffff;
+}
+
+.market-note {
+    margin-top: 26px;
+    font-size: 13px;
+}
+
+/* ---------- АДАПТИВНОСТЬ ---------- */
+
+@media (max-width: 700px) {
+    .market-page {
+        padding: 104px 20px 60px;
+    }
+
+    .market-hero h1 {
+        font-size: 38px;
+    }
+
+    .markets-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 390px) {
+    .market-card {
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .market-logo {
+        width: 50px;
+        height: 50px;
+    }
+
+    .market-title-row strong {
+        font-size: 15px;
+    }
+
+    .market-description {
+        font-size: 13px;
+    }
+}
