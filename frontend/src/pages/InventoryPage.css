@@ -1,0 +1,72 @@
+.inventory-placeholder {
+    max-width: 1200px;
+    min-height: calc(100vh - 208px);
+    margin: 0 auto;
+    padding: 124px 60px 100px;
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
+    color: #ffffff;
+}
+
+.inventory-placeholder-card {
+    width: min(100%, 650px);
+    padding: 54px 40px;
+    box-sizing: border-box;
+    text-align: center;
+    background: #10141c;
+    border: 1px solid #232838;
+    border-radius: 22px;
+}
+
+.inventory-placeholder-icon {
+    display: grid;
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 20px;
+    place-items: center;
+    border-radius: 16px;
+    background: rgba(77, 124, 255, 0.13);
+    color: #7c9bff;
+    font-size: 28px;
+}
+
+.inventory-placeholder-eyebrow {
+    color: #7c9bff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.inventory-placeholder-card h1 {
+    margin: 12px 0 14px;
+    font-size: 38px;
+}
+
+.inventory-placeholder-card h1 span {
+    background: linear-gradient(90deg, #4d7cff, #8a5cf6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.inventory-placeholder-card p {
+    max-width: 470px;
+    margin: 0 auto;
+    color: #9aa3b2;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+    .inventory-placeholder {
+        padding: 100px 20px 60px;
+    }
+
+    .inventory-placeholder-card {
+        padding: 42px 24px;
+    }
+
+    .inventory-placeholder-card h1 {
+        font-size: 32px;
+    }
+}

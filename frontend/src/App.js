@@ -6,6 +6,8 @@ import Header from "./components/Header";
 import DashboardPage from "./pages/DashboardPage"; // страница, которую мы показываем на "/"
 import AboutUsPage from "./pages/AboutUsPage";
 import MarketPage from "./pages/MarketPage";
+import InventoryPage from "./pages/InventoryPage";
+import CalculatorPage from "./pages/CalculatorPage";
 
 function App() {
     // steamId — значение, которое пользователь ввёл на приветственном экране
@@ -42,10 +44,10 @@ function App() {
                     <Route path="/" element={<DashboardPage />} />
                     <Route path="/market" element={<MarketPage />} />
                     <Route path="/about-us" element={<AboutUsPage />} />
+                    <Route path="/inventory" element={<InventoryPage />} />
+                    <Route path="/calculator" element={<CalculatorPage />} />
                     {/* TODO: сюда позже добавить остальные страницы, на которые уже есть ссылки в Header:
-                        <Route path="/calculator" element={<CalculatorPage />} />
-                        <Route path="/inventory" element={<InventoryPage />} />
-                        <Route path="/market" element={<MarketPage />} />
+                        УКРАЛИ!!!
                         Пока этих компонентов не существует, переход по этим ссылкам ничего не покажет. */}
                 </Routes>
             </main>
