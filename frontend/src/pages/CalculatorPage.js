@@ -36,7 +36,6 @@ export default function CalculatorPage() {
 			alert("Connection error");
 		}
     };
-    };
 
     return (
         <main className="calculator-page">
