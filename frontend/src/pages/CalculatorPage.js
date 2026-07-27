@@ -7,7 +7,7 @@ export default function CalculatorPage() {
     const [purchaseDate, setPurchaseDate] = useState("2026-07-21"); // Changed to ISO format for date input
     const [comment, setComment] = useState("Я хочу баунти и твикс");
 
-    const handleSubmit = (type) => {
+    const handleSubmit = async (type) => {
         const formData = {
             name,
             purchasePrice,
