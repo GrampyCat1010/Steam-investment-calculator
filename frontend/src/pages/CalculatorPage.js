@@ -5,7 +5,6 @@ export default function CalculatorPage() {
     const [name, setName] = useState("AK-47 | Redline (Field-Tested)");
     const [purchasePrice, setPurchasePrice] = useState("100");
     const [purchaseDate, setPurchaseDate] = useState("2026-07-21"); // Changed to ISO format for date input
-    const [operationType, setOperationType] = useState("Purchase");
     const [comment, setComment] = useState("Я хочу баунти и твикс");
 
     const handleSubmit = (type) => {
@@ -13,11 +12,30 @@ export default function CalculatorPage() {
             name,
             purchasePrice,
             purchaseDate,
-            operationType: type, // Use the passed type instead of state
+            operationType: type,
             comment,
         };
-        console.log(formData);
-        // Add your API call or other logic here
+        
+		try {
+			const response = await fetch(
+				"http://127.0.0.1:5000/api/save_deal",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(formData),
+				}
+			);
+			const data = await response.json();
+			console.log(data);
+			alert(data.message);
+
+		} catch (error) {
+			console.error(error);
+			alert("Connection error");
+		}
+    };
     };
 
     return (
