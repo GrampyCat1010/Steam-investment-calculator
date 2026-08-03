@@ -44,7 +44,7 @@ function App() {
                     <Route path="/" element={<DashboardPage />} />
                     <Route path="/market" element={<MarketPage />} />
                     <Route path="/about-us" element={<AboutUsPage />} />
-                    <Route path="/inventory" element={<InventoryPage />} />
+                    <Route path="/inventory" element={<InventoryPage steamId={steamId} />} />
                     <Route path="/calculator" element={<CalculatorPage />} />
                     {/* TODO: сюда позже добавить остальные страницы, на которые уже есть ссылки в Header:
                         УКРАЛИ!!!
