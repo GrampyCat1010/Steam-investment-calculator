@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import "./InventoryPage.css";
-import inventoryData from "../data/inventoryData";
+import { mapSteamInventory } from "../data/inventoryData";
+import { useCurrency } from "../context/CurrencyContext";
 
 const markets = ["Steam", "Skinport", "CSFloat", "Buff.163"];
 
@@ -23,7 +24,8 @@ const rarityColors = {
 const rarityOptions = ["All rarities", ...Object.keys(rarityColors)];
 
 export default function InventoryPage({ steamId }) {
-  const currentSteamId = steamId || inventoryData.steam_id;
+  const currentSteamId = steamId || "";
+  const { currency, convertFromUsd, formatMoney } = useCurrency();
   const [market, setMarket] = useState("Steam");
   const [layout, setLayout] = useState("grid");
   const [query, setQuery] = useState("");
@@ -32,13 +34,55 @@ export default function InventoryPage({ steamId }) {
   const [sort, setSort] = useState("price-desc");
   const [min, setMin] = useState("");
   const [max, setMax] = useState("");
+  const [inventory, setInventory] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
+  const [fileName, setFileName] = useState("");
+
+  const importInventoryFile = (file) => {
+    if (!file) return;
+    if (!file.name.toLowerCase().endsWith(".json")) {
+      setLoadError("Загрузите файл в формате .json");
+      return;
+    }
+
+    setLoading(true);
+    setLoadError("");
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const records = JSON.parse(event.target.result);
+        if (!Array.isArray(records)) throw new Error("JSON должен содержать массив предметов");
+        setInventory({
+          steam_id: currentSteamId,
+          total_items: records.length,
+          items: mapSteamInventory(records)
+        });
+        setFileName(file.name);
+      } catch (error) {
+        setLoadError(`Не удалось прочитать файл: ${error.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+    reader.onerror = () => {
+      setLoadError("Не удалось прочитать выбранный файл");
+      setLoading(false);
+    };
+    reader.readAsText(file, "UTF-8");
+  };
+
+  const source = useMemo(
+    () => inventory || { steam_id: currentSteamId, total_items: 0, items: [] },
+    [inventory, currentSteamId]
+  );
 
   const items = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
 
-    return inventoryData.items
+    return source.items
       .filter((item) => {
-        const price = item.prices[market];
+        const price = convertFromUsd(item.prices[market]);
         const matchesName = item.name.toLowerCase().includes(normalizedQuery);
         const matchesRarity = rarity === "All rarities" || item.rarity === rarity;
         const matchesTradeable = !tradeable || item.marketable;
@@ -49,12 +93,12 @@ export default function InventoryPage({ steamId }) {
       })
       .sort((first, second) => {
         if (sort === "name") return first.name.localeCompare(second.name);
-        const priceDifference = first.prices[market] - second.prices[market];
+        const priceDifference = convertFromUsd(first.prices[market]) - convertFromUsd(second.prices[market]);
         return sort === "price-asc" ? priceDifference : -priceDifference;
       });
-  }, [market, query, rarity, tradeable, min, max, sort]);
+  }, [source, market, query, rarity, tradeable, min, max, sort, convertFromUsd]);
 
-  const total = inventoryData.items.reduce(
+  const total = source.items.reduce(
     (sum, item) => sum + item.prices[market],
     0
   );
@@ -76,10 +120,16 @@ export default function InventoryPage({ steamId }) {
           <p className="subtitle">Track skins and compare their value across markets.</p>
         </div>
         <div className="profile-actions">
+          <label className="upload-button">
+            Загрузить JSON
+            <input type="file" accept=".json,application/json" onChange={(event) => importInventoryFile(event.target.files[0])} />
+          </label>
           <a className="profile-link" href={`https://steamcommunity.com/profiles/${currentSteamId}`} target="_blank" rel="noreferrer">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm7 8a7 7 0 0 0-14 0h14Z" /></svg>
             Open Steam profile
           </a>
           <a className="profile-link inventory-link" href={`https://steamcommunity.com/profiles/${currentSteamId}/inventory/#730`} target="_blank" rel="noreferrer">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 7 8-4 8 4-8 4-8-4Zm0 5 8 4 8-4M4 17l8 4 8-4" /></svg>
             Open CS2 inventory
           </a>
         </div>
@@ -91,15 +141,15 @@ export default function InventoryPage({ steamId }) {
           <div>
             <small>CONNECTED ACCOUNT</small>
             <strong>Steam ID: {currentSteamId}</strong>
-            <span>CS2 - {inventoryData.total_items} items synced</span>
+            <span>CS2 - {source.total_items} items {fileName ? `из ${fileName}` : "synced"}</span>
           </div>
         </div>
         <div className="value-stat">
           <span>ESTIMATED VALUE</span>
-          <strong>${total.toFixed(2)}</strong>
+          <strong>{formatMoney(total)}</strong>
           <small>Based on {market} prices</small>
         </div>
-        <button className="refresh-button" type="button">Refresh inventory</button>
+          {fileName && <button className="refresh-button" type="button" onClick={() => { setInventory(null); setFileName(""); }}>Clear inventory</button>}
       </div>
 
       <div className="inventory-toolbar">
@@ -131,7 +181,7 @@ export default function InventoryPage({ steamId }) {
             </select>
           </label>
           <label>
-            PRICE, USD
+            PRICE, {currency}
             <div className="range">
               <input value={min} onChange={(event) => setMin(event.target.value)} placeholder="Min" type="number" />
               <i>-</i>
@@ -146,14 +196,18 @@ export default function InventoryPage({ steamId }) {
         </aside>
 
         <main className={`skins ${layout}`}>
-          <div className="items-found"><b>{items.length} {items.length === 1 ? "item" : "items"}</b><span>Prices from {market}</span></div>
+          <div className="items-found"><b>{loading ? "Loading inventory…" : `${items.length} ${items.length === 1 ? "item" : "items"}`}</b><span>Prices from {market}</span></div>
+          {loadError && <div className="empty">{loadError}</div>}
           <div className="skin-list">
             {items.map((item) => (
               <article className="skin-card" key={item.asset_id}>
-                <div className="skin-art"><span className="rarity-line" style={{ background: rarityColors[item.rarity] }} /></div>
+                <div className="skin-art">
+                  {item.image ? <img className="skin-image" src={item.image} alt={item.name} /> : <span className="skin-fallback">{item.name.slice(0, 2)}</span>}
+                  <span className="rarity-line" style={{ background: rarityColors[item.rarity] || "#b0c3d9" }} />
+                </div>
                 <div className="skin-info">
                   <div><p className="weapon-type">{item.type}</p><h2>{item.name}</h2><p className="wear">{item.wear} - Float {item.float}</p></div>
-                  <div className="skin-price"><small>{market.toUpperCase()}</small><strong>${item.prices[market].toFixed(2)}</strong><span className={item.change >= 0 ? "positive" : "negative"}>{item.change >= 0 ? "+" : ""}{item.change}%</span></div>
+                  <div className="skin-price"><small>{market.toUpperCase()}</small><strong>{formatMoney(item.prices[market])}</strong><span className={item.change >= 0 ? "positive" : "negative"}>{item.change >= 0 ? "+" : ""}{item.change}%</span></div>
                 </div>
                 <span className="status">{item.marketable ? "Tradable" : "Trade locked"}</span>
               </article>

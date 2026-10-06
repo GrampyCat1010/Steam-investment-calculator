@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "./CalculatorPage.css";
+import { useCurrency } from "../context/CurrencyContext";
 
 export default function CalculatorPage() {
+    const { currency } = useCurrency();
     const [name, setName] = useState("AK-47 | Redline (Field-Tested)");
     const [purchasePrice, setPurchasePrice] = useState("100");
     const [purchaseDate, setPurchaseDate] = useState("2026-07-21"); // Changed to ISO format for date input
@@ -14,6 +16,7 @@ export default function CalculatorPage() {
             purchaseDate,
             operationType: type,
             comment,
+            currency,
         };
         
 		try {
@@ -52,7 +55,7 @@ export default function CalculatorPage() {
                 </label>
 
                 <label>
-                    Purchase Price, Rubles
+                    Purchase Price, {currency}
                     <input
                         type="number"
                         min="0"

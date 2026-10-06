@@ -128,6 +128,32 @@
     color: #4d7cff;
 }
 
+.currency-switch {
+    display: flex;
+    gap: 2px;
+    padding: 3px;
+    border: 1px solid #232838;
+    border-radius: 10px;
+    background: #10141c;
+}
+
+.currency-switch button {
+    width: 30px;
+    height: 28px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: #9aa3b2;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.currency-switch button.selected,
+.currency-switch button:hover {
+    background: #4d7cff;
+    color: #fff;
+}
+
 /* Квадратная кнопка-иконка переключения темы */
 .theme-toggle {
     width: 40px;

@@ -5,7 +5,6 @@ import WelcomePage from "./pages/WelcomePage";
 import Header from "./components/Header";
 import DashboardPage from "./pages/DashboardPage"; // страница, которую мы показываем на "/"
 import AboutUsPage from "./pages/AboutUsPage";
-import MarketPage from "./pages/MarketPage";
 import InventoryPage from "./pages/InventoryPage";
 import CalculatorPage from "./pages/CalculatorPage";
 
@@ -42,7 +41,6 @@ function App() {
                 <Routes>
                     {/* path="/" — главная страница (дашборд с графиком и статами) */}
                     <Route path="/" element={<DashboardPage />} />
-                    <Route path="/market" element={<MarketPage />} />
                     <Route path="/about-us" element={<AboutUsPage />} />
                     <Route path="/inventory" element={<InventoryPage steamId={steamId} />} />
                     <Route path="/calculator" element={<CalculatorPage />} />

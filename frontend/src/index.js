@@ -4,12 +4,15 @@ import { BrowserRouter } from 'react-router-dom'; // ← ДОБАВИТЬ ЭТО
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { CurrencyProvider } from './context/CurrencyContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
         <BrowserRouter>  {/* ← ОБЕРНУТЬ App в BrowserRouter */}
-            <App />
+            <CurrencyProvider>
+                <App />
+            </CurrencyProvider>
         </BrowserRouter>
     </React.StrictMode>
 );

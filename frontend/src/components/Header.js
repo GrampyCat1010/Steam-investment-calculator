@@ -1,6 +1,7 @@
 import './Header.css';
 import { Link, useLocation } from "react-router-dom"; // useLocation узнаёт текущий URL, чтобы подсветить активный пункт меню
 import React, { useState } from 'react';
+import { useCurrency } from "../context/CurrencyContext";
 
 // Массив пунктов навигации вместо 5 отдельных <Link> в JSX —
 // удобнее добавлять/убирать/переставлять пункты меню в одном месте
@@ -8,7 +9,6 @@ const NAV_ITEMS = [
     { to: "/", label: "Home" },
     { to: "/calculator", label: "Calculator" },
     { to: "/inventory", label: "Inventory" },
-    { to: "/market", label: "Market" },
     { to: "/about-us", label: "About Us" },
 ];
 
@@ -19,6 +19,7 @@ function Header({ steamId }) {
     // location.pathname — текущий адрес страницы (например "/" или "/calculator"),
     // используется ниже, чтобы понять, какой пункт меню сейчас активен
     const location = useLocation();
+    const { currency, setCurrency } = useCurrency();
 
     const handleCopySteamId = () => {
         if (!steamId) return; // если steamId ещё не задан, копировать нечего
@@ -75,6 +76,20 @@ function Header({ steamId }) {
                         Steam ID: {steamId} {copied && "✓"}
                     </span>
                 )}
+                <div className="currency-switch" role="group" aria-label="Currency">
+                    <button
+                        type="button"
+                        className={currency === "USD" ? "selected" : ""}
+                        onClick={() => setCurrency("USD")}
+                    >$
+                    </button>
+                    <button
+                        type="button"
+                        className={currency === "RUB" ? "selected" : ""}
+                        onClick={() => setCurrency("RUB")}
+                    >₽
+                    </button>
+                </div>
                 {/* Кнопка переключения темы — пока просто иконка-заглушка без реальной логики переключения */}
                 <button className="theme-toggle" type="button" aria-label="Toggle theme">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

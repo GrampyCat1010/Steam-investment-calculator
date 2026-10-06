@@ -1,6 +1,7 @@
 import React from "react";
 import "./DashboardPage.css";
 import { Link } from "react-router-dom";
+import { useCurrency } from "../context/CurrencyContext";
 
 // ===== ДАННЫЕ ДЛЯ ГРАФИКА =====
 // Мок-данные для графика (30 дней). Каждое число — стоимость портфеля в этот день.
@@ -93,12 +94,13 @@ function PortfolioChart({ data }) {
 }
 
 export default function DashboardPage() {
+    const { currency, convertFromUsd, formatMoney } = useCurrency();
     // ===== ДАННЫЕ ДЛЯ 4 КАРТОЧЕК СТАТИСТИКИ =====
     // Массив вместо 4 отдельных JSX-блоков — легче добавить/убрать метрику, не трогая разметку ниже
     const stats = [
-        { label: "Total Value", value: "$1,256.78", change: "+12.45%" },
+        { label: "Total Value", value: formatMoney(1256.78), change: "+12.45%" },
         { label: "Trade Count", value: "128", change: "+8.72%" },
-        { label: "Total Profit (USD)", value: "$342.19", change: "+6.31%" },
+        { label: `Total Profit (${currency})`, value: formatMoney(342.19), change: "+6.31%" },
         { label: "Total Profit (%)", value: "27.28%", change: "+6.31%" },
     ];
 
@@ -201,7 +203,7 @@ export default function DashboardPage() {
                     {/* Карточка с графиком — используем компонент PortfolioChart, объявленный выше в этом файле */}
                     <div className="portfolio-chart-card">
                         <h3>Portfolio Value (30 Days)</h3>
-                        <PortfolioChart data={CHART_DATA} />
+                        <PortfolioChart data={CHART_DATA.map(convertFromUsd)} />
                         <div className="portfolio-chart-labels">
                             {CHART_LABELS.map((label) => (
                                 <span key={label}>{label}</span>

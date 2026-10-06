@@ -25,10 +25,35 @@
   color:#9aa5b6
 }
 .profile-link {
-  color:#8da7ff;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  min-height:38px;
+  box-sizing:border-box;
+  padding:0 12px;
+  color:#c5d3ff;
+  background:#18233a;
+  border:1px solid #304872;
+  border-radius:8px;
   text-decoration:none;
   font-weight:600;
-  font-size:14px
+  font-size:13px;
+  transition:background .18s,border-color .18s,color .18s,transform .18s
+}
+.profile-link:hover {
+  color:#fff;
+  background:#24385f;
+  border-color:#5d83d4;
+  transform:translateY(-1px)
+}
+.profile-link svg {
+  width:16px;
+  height:16px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round
 }
 .inventory-summary {
   display:flex;
@@ -404,8 +429,28 @@
   gap: 18px;
   flex-wrap: wrap;
 }
+.upload-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 13px;
+  border: 1px solid #537ce0;
+  border-radius: 8px;
+  background: #263d7b;
+  color: #e6edff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.upload-button:hover {
+  background: #31529d;
+}
+.upload-button input {
+  display: none;
+}
 .inventory-link {
-  color: #8bb8ff;
+  color: #bce2ff;
+  background:#172b3b;
+  border-color:#2f617e;
 }
 /* Refined inventory controls */
 .inventory-toolbar {
